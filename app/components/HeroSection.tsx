@@ -1,7 +1,5 @@
 "use client";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function HeroSection() {
@@ -11,21 +9,23 @@ export default function HeroSection() {
     "/assets/images/slider3.jpg",
   ];
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  };
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
+    }, 3000); // Change slide every 3 seconds
+    return () => clearInterval(interval);
+  }, [sliderImages.length]);
 
   return (
-    <section className="relative w-full">
-      <Slider {...settings}>
+    <section className="relative w-full overflow-hidden">
+      <div
+        className="relative flex transition-transform duration-500 ease-in-out"
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+      >
         {sliderImages.map((image, index) => (
-          <div key={index}>
+          <div key={index} className="min-w-full">
             <img
               src={image}
               alt={`Slider Image ${index + 1}`}
@@ -33,7 +33,7 @@ export default function HeroSection() {
             />
           </div>
         ))}
-      </Slider>
+      </div>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
         <h1 className="text-sm sm:text-base lg:text-lg">The Best Look</h1>
         <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold">
@@ -47,6 +47,18 @@ export default function HeroSection() {
             View
           </button>
         </Link>
+      </div>
+      {/* Dots */}
+      <div className="absolute bottom-4 flex justify-center w-full gap-2">
+        {sliderImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full transition ${
+              currentSlide === index ? "bg-white" : "bg-gray-500"
+            }`}
+          ></button>
+        ))}
       </div>
     </section>
   );

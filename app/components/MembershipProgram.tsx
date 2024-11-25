@@ -1,4 +1,4 @@
-import { Gem } from "lucide-react";
+"use client";
 
 const MembershipSection = () => {
   return (
