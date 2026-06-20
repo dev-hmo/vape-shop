@@ -1,13 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-
-interface Product {
-  title: string;
-  price: string;
-  points: string;
-  image: string;
-}
+import React, { useRef } from "react";
+import { Product } from "@/app/data/products";
+import ProductCard from "@/app/components/ProductCard";
+import Link from "next/link";
 
 interface SectionProps {
   category: string;
@@ -22,81 +18,103 @@ export default function ProductSection({
   backgroundImage,
   products,
 }: SectionProps) {
-  const [scrollIndex, setScrollIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Show arrows based on scroll position
-  const canScrollLeft = scrollIndex > 0;
-  const canScrollRight = scrollIndex < products.length - 4; // Adjust visible product count here
-
-  const scrollLeft = () => setScrollIndex((prev) => Math.max(prev - 1, 0));
-  const scrollRight = () =>
-    setScrollIndex((prev) => Math.min(prev + 1, products.length - 4));
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 220;
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
-    <div
-      className="relative bg-cover bg-center rounded-lg mb-8 mx-10"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-      }}
-    >
-      <div className="bg-black bg-opacity-50 rounded-lg overflow-hidden p-6 w-full">
-        <div className="flex">
-          {/* Left Section */}
-          <div className="w-1/4 flex flex-col justify-center text-white pr-6">
-            <h2 className="text-3xl font-bold">{category}</h2>
-            <p className="text-lg mt-2">{description}</p>
+    <div className="relative rounded-2xl overflow-hidden mx-4 sm:mx-8 lg:mx-10 border border-white/5">
+      {/* Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      />
+      <div className="absolute inset-0 bg-[#0f0f1a]/80 backdrop-blur-sm" />
+
+      {/* Content */}
+      <div className="relative z-10 p-6 sm:p-8 lg:p-10">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left: Category Info */}
+          <div className="lg:w-1/4 flex flex-col justify-center">
+            <span className="text-xs tracking-[0.2em] uppercase text-purple-400 font-medium mb-2">
+              Category
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3">
+              {category}
+            </h2>
+            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              {description}
+            </p>
+            <Link
+              href={`/products`}
+              className="btn-outline text-xs px-5 py-2 w-fit"
+            >
+              View All
+            </Link>
           </div>
 
-          {/* Product List */}
-          <div className="w-3/4 relative flex items-center">
-            {/* Scrollable Content */}
+          {/* Right: Product Carousel */}
+          <div className="lg:w-3/4 relative">
             <div
-              className="flex space-x-4 overflow-hidden"
-              style={{
-                transform: `translateX(-${scrollIndex * 25}%)`,
-                transition: "transform 0.3s ease",
-              }}
+              ref={scrollContainerRef}
+              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth py-2"
             >
-              {products.map((product, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-md p-4 w-48 flex-shrink-0"
-                >
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="h-40 w-full object-cover rounded-md"
-                  />
-                  <h3 className="text-lg font-semibold mt-2">
-                    {product.title}
-                  </h3>
-                  <p className="text-sm text-gray-700">{product.price}</p>
-                  <p className="text-sm text-yellow-600 font-bold">
-                    {product.points}
-                  </p>
-                </div>
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  variant="compact"
+                />
               ))}
             </div>
 
-            {/* Left Arrow */}
-            {canScrollLeft && (
-              <button
-                onClick={scrollLeft}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-3 hover:bg-gray-700 z-10"
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => scroll("left")}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 w-9 h-9 glass rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all z-10"
+              aria-label="Scroll left"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
               >
-                &#8249;
-              </button>
-            )}
-
-            {/* Right Arrow */}
-            {canScrollRight && (
-              <button
-                onClick={scrollRight}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-3 hover:bg-gray-700 z-10"
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 w-9 h-9 glass rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all z-10"
+              aria-label="Scroll right"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
               >
-                &#8250;
-              </button>
-            )}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
