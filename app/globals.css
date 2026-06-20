@@ -214,7 +214,7 @@ body {
 .vip-card {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(26, 20, 48, 0.9) 0%, rgba(13, 10, 24, 0.95) 100%);
+  background: #120e25;
   border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
@@ -227,57 +227,33 @@ body {
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 255, 255, 0.13) 50%,
+    rgba(255, 255, 255, 0.08) 50%,
     transparent 100%
   );
   transform: skewX(-25deg);
   animation: shimmer-sheen 6s infinite ease-in-out;
 }
 
-/* ===== Gradient Utilities ===== */
+/* ===== Solid Accent Utilities ===== */
 .gradient-primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-gradient-start),
-    var(--color-gradient-end)
-  );
+  background: var(--color-primary);
 }
 
 .gradient-glow-orange {
-  background: linear-gradient(
-    135deg,
-    #f59e0b,
-    #ef4444
-  );
+  background: #f59e0b;
 }
 
 .gradient-glow-emerald {
-  background: linear-gradient(
-    135deg,
-    #10b981,
-    #059669
-  );
+  background: #10b981;
 }
 
 .gradient-text {
-  background: linear-gradient(
-    135deg,
-    #a78bfa,
-    #ec4899,
-    #fbbf24
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #a78bfa;
 }
 
 /* ===== Button Styles ===== */
 .btn-primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-gradient-start),
-    var(--color-gradient-end)
-  );
+  background: var(--color-primary);
   color: white;
   font-weight: 600;
   padding: 0.75rem 2rem;

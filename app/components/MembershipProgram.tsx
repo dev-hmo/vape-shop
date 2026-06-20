@@ -17,7 +17,7 @@ const MembershipSection = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-[#07070e]/95 via-[#07070e]/85 to-purple-950/50" />
 
           {/* Golden Card Chip */}
-          <div className="absolute top-8 right-8 z-10 w-12 h-9 rounded-lg bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-600 opacity-80 border border-amber-300/30 flex items-center justify-center shadow-inner overflow-hidden">
+          <div className="absolute top-8 right-8 z-10 w-12 h-9 rounded-lg bg-amber-400 opacity-80 border border-amber-300/30 flex items-center justify-center shadow-inner overflow-hidden">
             <div className="grid grid-cols-3 w-full h-full p-1 gap-0.5 opacity-40">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="border border-black/20 rounded-sm" />
@@ -37,7 +37,7 @@ const MembershipSection = () => {
               Unlock the ultimate vaping experience. Access member-only pricing, earn 10% back in points on every purchase, and claim free seasonal gifts.
             </p>
             <div>
-              <button className="btn-primary text-sm px-8 py-3 bg-gradient-to-r from-amber-400 to-amber-600 border-none text-slate-950 font-bold hover:shadow-amber-500/30">
+              <button className="btn-primary text-sm px-8 py-3 bg-amber-500 border-none text-slate-950 font-bold hover:shadow-amber-500/30">
                 Join VIP Club
               </button>
             </div>
